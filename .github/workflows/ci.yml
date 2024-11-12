@@ -1,0 +1,16 @@
+name: "CI"
+
+on:
+  push:
+    paths: ~
+
+jobs:
+  hello:
+    runs-on: "ubuntu-lastest"
+    steps:
+      - name: "Hello"
+        run: echo "Hello, world!"
+      - name: "multiple line"
+        run: |
+          echo "Hello,"
+          echo "world!"
