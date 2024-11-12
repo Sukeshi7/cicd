@@ -2,20 +2,14 @@ name: "CI"
 
 on:
   push:
-    paths: ~
+    paths-ignore: "./ci-basics.yml"
   workflow_dispatch: ~
 
 jobs:
-  hello:
+  deps:
+    name: "Install dependencies"
     runs-on: "ubuntu-latest"
     steps:
-      - name: "Hello"
-        run: echo "Hello, world!"
-      - name: "multiple line"
-        run: |
-          echo "Hello"
-          exit 1
-          echo "world"
-        continue-on-error: true
-      - name: "list directory"
-        run: ls
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+      - run: ls
