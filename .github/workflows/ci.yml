@@ -3,16 +3,19 @@ name: "CI"
 on:
   push:
     paths: ~
+  workflows_dispatch: ~
 
 jobs:
   hello:
-    runs-on: "ubuntu-lastest"
+    runs-on: "ubuntu-latest"
     steps:
       - name: "Hello"
         run: echo "Hello, world!"
       - name: "multiple line"
         run: |
           echo "Hello,"
+          exit 1
           echo "world!"
+        continue-on-error: true
       - name: "list directory"
         run: ls
