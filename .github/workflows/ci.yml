@@ -3,7 +3,7 @@ name: "CI"
 on:
   push:
     paths: ~
-  workflows_dispatch: ~
+  workflow_dispatch: ~
 
 jobs:
   hello:
@@ -13,9 +13,9 @@ jobs:
         run: echo "Hello, world!"
       - name: "multiple line"
         run: |
-          echo "Hello,"
+          echo "Hello"
           exit 1
-          echo "world!"
+          echo "world"
         continue-on-error: true
       - name: "list directory"
         run: ls
