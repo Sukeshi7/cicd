@@ -7,9 +7,33 @@ on:
 
 jobs:
   deps:
-    name: "Install dependencies"
+    name: "Install depedencies"
     runs-on: "ubuntu-latest"
+    services:
+      database:
+        image: mysql
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: app
+        ports:
+          - 3306:3306
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v4
-      - run: ls
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@2.31.1
+        with:
+          php-version: 8.1
+          tools: composer
+      - name: "Check database healthy"
+        run: nc -zv localhost 3306
+      - name: "Install composer deps"
+        run: |
+          export APP_ENV=test
+          composer install --prefer-dist --no-interaction --no-progress
+      - name: "Run migrations"
+        run: php bin/console d:m:m
+        env:
+          DATABASE_HOST: localhost
+          DATABASE_NAME: app
+          DATABASE_PASSWORD: password
