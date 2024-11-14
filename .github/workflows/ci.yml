@@ -45,3 +45,36 @@ jobs:
           php -S 127.0.0.1:8080 -t public &
           sleep 2
           nc -zv localhost 8080
+
+  lint:
+    name: "Run Linters"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+      - name: "Setup PHP Action"
+        uses: shivammathur/setup-php@2.31.1
+        with:
+          php-version: 8.1
+          tools: composer
+      - name: "Install composer deps"
+        run: composer install --no-interaction
+      - name: "Run PHPStan"
+        run: vendor/bin/phpstan analyse
+      - name: "Run PHP_CodeSniffer"
+        run: vendor/bin/phpcs --standard=PSR12 src/
+  test:
+    name: "Run Unit and Integration Tests"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.31.1
+        with:
+          php-version: 8.1
+          tools: composer
+      - name: "Install composer deps"
+        run: composer install --no-interaction
+      - name: "Run PHPUnit"
+        run: vendor/bin/phpunit
